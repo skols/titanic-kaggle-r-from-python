@@ -13,6 +13,7 @@ test <- read.csv("test.csv", stringsAsFactors=F)
 
 combined <- bind_rows(train, test)
 
+# Analyze by describing data
 # Show column names
 names(train)
 
@@ -25,4 +26,32 @@ glimpse(train)
 glimpse(test)
 
 # Look at summary data
+summary(train)
 summary(test)
+
+# Analyze by pivoting features
+# Pclass
+train %>% 
+  group_by(Pclass) %>% 
+  summarize(mean_S=mean(Survived)) %>% 
+  arrange(desc(mean_S))
+
+# Sex
+train %>% 
+  group_by(Sex) %>% 
+  summarize(mean_S=mean(Survived)) %>% 
+  arrange(desc(mean_S))
+
+# SibSp
+train %>% 
+  group_by(SibSp) %>% 
+  summarize(mean_S=mean(Survived)) %>% 
+  arrange(desc(mean_S))
+
+# Parch
+train %>% 
+  group_by(Parch) %>% 
+  summarize(mean_S=mean(Survived)) %>% 
+  arrange(desc(mean_S))
+
+# Analyze by visualizing data
