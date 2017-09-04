@@ -138,3 +138,39 @@ train %>%
 train$Title <- factor(train$Title, levels = c("Mr", "Miss", "Mrs", "Master", "Rare"))
 train$Title <- as.integer(train$Title)
 head(train)
+
+test$Title <- factor(test$Title, levels = c("Mr", "Miss", "Mrs", "Master", "Rare"))
+test$Title <- as.integer(test$Title)
+
+# Name can now be safely dropped and PassengerId isn't needed, so it can also be dropped
+train <- train %>% 
+  select(-c(Name, PassengerId))
+
+test <- test %>% 
+  select(-c(Name, PassengerId))
+
+combined <- bind_rows(train, test)
+
+dim(train)
+dim(test)
+dim(combined)
+
+# Convert Sex to numerical values where female=1 and male=0
+train$Sex <- factor(train$Sex, levels = c("female", "male")) # female=1, male=2
+train$Sex <- as.integer(train$Sex)
+train$Sex <- gsub(2, 0, train$Sex) # replacing 2 with 0
+head(train)
+
+test$Sex <- factor(test$Sex, levels = c("female", "male"))
+test$Sex <- as.integer(test$Sex)
+test$Sex <- gsub(2, 0, test$Sex)
+
+combined <- bind_rows(train, test)
+head(combined)
+
+# Completing a numerical continous feature - estimating and completing
+# features with missing or null values
+# Doing for Age first
+ggplot(train, aes(Age)) +
+  geom_histogram(alpha=0.5, bins=20) +
+  facet_grid(Pclass ~ Sex)
