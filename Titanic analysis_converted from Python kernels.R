@@ -1,6 +1,7 @@
 # Load packages
 library(ggplot2)
 library(dplyr)
+library(tidyr)
 library(reshape2)
 library(ggthemes) # theme_few()
 library(scales) # dollar_format() function
@@ -174,3 +175,14 @@ head(combined)
 ggplot(train, aes(Age)) +
   geom_histogram(alpha=0.5, bins=20) +
   facet_grid(Pclass ~ Sex)
+
+guess_ages <- matrix(c(0, 0, 0), nrow=2, ncol=3)
+
+# i is Sex (0, 1), j is Pclass (1, 2, 3)
+for (i in c(0:1)) {
+  for (j in c(1:3)) {
+    guess_df <- train[((train$Sex == i) & (train$Pclass == j)), "Age"]
+    age_guess <- median(guess_df, na.rm=TRUE)
+    # guess_ages[i+1, j] = integer(age_guess/0.5 + 0.5) * 0.5
+  }
+}
